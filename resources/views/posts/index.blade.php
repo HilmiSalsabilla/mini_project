@@ -3,13 +3,13 @@
 @section('content')
     <div class="container mb-5">
         <h2 class="text-xl mb-4 font-semibold">Posts</h2> 
-        <a href="{{ route('posts.create') }}" class="btn btn-md btn-primary">Create</a>
+        <a href="{{ route('posts.create') }}" class="btn btn-md btn-primary">Add Post</a>
         <br><br>
         {{-- <p>Debug Auth Check: {{ auth()->check() ? 'YES' : 'NO' }}</p>
         <p>Debug User: {{ auth()->user() ? auth()->user()->name : 'Guest' }}</p> --}}
         @forelse ($posts as $post)
-            <div class="card mb-2">
-                <div class="card-body hover:shadow-lg p-4">
+            <div class="card rounded-xl mb-3">
+                <div class="card-body rounded-xl hover:shadow-lg p-4">
                     <h5 class="font-bold mb-3"> {{ $post->title }} </h5>
                     <hr class="divide-solid mb-3">
                     <p> {!! nl2br(e($post->content)) !!} </p>

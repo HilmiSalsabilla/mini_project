@@ -25,7 +25,7 @@
         {{-- <div class="text-center text-white bg-secondary py-1">Layout Loaded ✅</div> --}}
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
             <div class="container">
-                <a href="{{ url('/') }}" class="navbar-brand">Laravel Mini App</a>
+                <a href="{{ url('/') }}" class="navbar-brand text-2xl font-semibold">Laravel Mini App</a>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         @auth
