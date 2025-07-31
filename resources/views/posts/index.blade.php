@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mb-5">
-        <h2 class="text-2xl mb-4 font-normal">Posts</h2> 
+        <h2 class="text-xl mb-4 font-semibold">Posts</h2> 
         <a href="{{ route('posts.create') }}" class="btn btn-md btn-primary">Create</a>
         <br><br>
         {{-- <p>Debug Auth Check: {{ auth()->check() ? 'YES' : 'NO' }}</p>
@@ -11,6 +11,7 @@
             <div class="card mb-2">
                 <div class="card-body hover:shadow-lg p-4">
                     <h5 class="font-bold mb-3"> {{ $post->title }} </h5>
+                    <hr class="divide-solid mb-3">
                     <p> {!! nl2br(e($post->content)) !!} </p>
                     <small>By {{ $post->user->name ?? 'Unknown User' }} </small>
                     <br><br>
