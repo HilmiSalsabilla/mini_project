@@ -18,7 +18,7 @@
                     {!! nl2br(e($post->content)) !!}
                 </p>
                 <p class="text-sm text-gray-500 mb-4">
-                    By <span class="font-semibold">{{ $post->user->name ?? 'Unknown User' }}</span>
+                    By <span class="font-semibold">{{ $post->user->name ?? 'Unknown User' }}</span> • <span class="font-normal italic">{{ $post->updated_at }}</span>
                 </p>
 
                 <div class="flex space-x-3">

@@ -13,7 +13,8 @@ class PostController extends Controller
     }
 
     public function index() {
-        $posts = Post::where('user_id', Auth::id())->latest()->get();
+        // $posts = Post::where('user_id', Auth::id())->latest()->get();
+        $posts = Post::with('user')->latest()->get();
         return view('posts.index', compact('posts'));
     }
 
@@ -37,12 +38,12 @@ class PostController extends Controller
     }
 
     public function edit(Post $post) {
-        $this->authorize('update', $post);
+        // $this->authorize('update', $post);
         return view('posts.edit', compact('post'));
     }
 
     public function update(Request $request, Post $post) {
-        $this->authorize('update', $post);
+        // $this->authorize('update', $post);
 
         $request->validate([
             'title' => 'required|max:255',
@@ -54,7 +55,7 @@ class PostController extends Controller
     }
 
     public function destroy(Post $post) {
-        $this->authorize('delete', $post);
+        // $this->authorize('delete', $post);
         $post->delete();
         return redirect()->route('posts.index')->with('success', 'Post deleted!');
     }
