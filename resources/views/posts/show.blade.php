@@ -18,12 +18,27 @@
             {!! nl2br(e($post->content)) !!}
         </div>
 
-        <!-- Tombol kembali -->
-        <div>
+        <!-- Tombol aksi -->
+      <div class="flex items-center space-x-3">
             <a href="{{ route('posts.index') }}" 
-               class="inline-block bg-gray-200 hover:bg-gray-400 text-black px-3 py-1.5 rounded-md text-sm shadow-sm transition">
+               class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-4 py-2 rounded-lg text-sm shadow-sm transition">
                 ← Back to Posts
             </a>
+
+            @can('update', $post)
+                <a href="{{ route('posts.edit', $post) }}" 
+                   class="bg-yellow-400 hover:bg-yellow-500 text-gray-700 px-4 py-2 rounded-lg text-sm shadow-sm transition">
+                    ✏ Edit
+                </a>
+            @endcan
+
+            @can('delete', $post) 
+                <button type="button"
+                        onclick="openDeleteModal('{{ route('posts.destroy', $post) }}')" 
+                        class="bg-red-500 hover:bg-red-600 text-gray-700 px-4 py-2 rounded-lg text-sm shadow-sm transition">
+                    🗑 Delete
+                </button>
+            @endcan
         </div>
     </div>
 @endsection

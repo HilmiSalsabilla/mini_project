@@ -91,11 +91,64 @@
         @yield('content')
     </main>
 
+    <!-- Global Delete Modal -->
+    <div id="deleteModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 hidden opacity-0 transition-opacity duration-300 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl shadow-lg p-6 max-w-sm w-full transform scale-95 transition-transform duration-300">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4">Konfirmasi Hapus</h2>
+            <p class="text-gray-600 mb-6">Apakah kamu yakin ingin menghapus post ini? Tindakan ini tidak bisa dibatalkan.</p>
+            <div class="flex justify-end space-x-3">
+                <button type="button" onclick="closeDeleteModal()" 
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg text-sm">
+                    Batal
+                </button>
+                <form id="deleteForm" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                            class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm">
+                        Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
+        const modal = document.getElementById('deleteModal');
+        const modalBox = modal.querySelector('div');
+        const deleteForm = document.getElementById('deleteForm');
+
+        function openDeleteModal(actionUrl) {
+            deleteForm.action = actionUrl;
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalBox.classList.remove('scale-95');
+                modalBox.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeDeleteModal() {
+            modal.classList.add('opacity-0');
+            modalBox.classList.remove('scale-100');
+            modalBox.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeDeleteModal();
+        });
+
         // Toggle mobile menu
         document.getElementById('mobile-menu-button').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
+
+        // Auto-hide flash message
+        setTimeout(() => {
+            const flash = document.querySelector('.bg-green-100');
+            if (flash) flash.style.display = 'none';
+        }, 3000);
     </script>
 </body>
 </html>

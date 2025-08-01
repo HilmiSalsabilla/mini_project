@@ -26,25 +26,22 @@
                 </p>
 
                 <div class="flex space-x-3">
-                    <a href="{{ route('posts.show', $post) }}" class="bg-gray-200 hover:bg-gray-400 text-black px-3 py-1.5 rounded-md text-sm shadow-sm">
+                    <a href="{{ route('posts.show', $post) }}" class="bg-gray-200 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg text-sm shadow-sm transition">
                         Read More
                     </a>
                     @can('update', $post)
                         <a href="{{ route('posts.edit', $post) }}" 
-                           class="bg-white-400 hover:bg-yellow-500 text-black px-3 py-1.5 rounded-md text-sm shadow-sm border border-gray-300">
-                            Edit
+                           class="bg-yellow-400 hover:bg-yellow-500 text-gray-700 px-4 py-2 rounded-lg text-sm shadow-sm transition">
+                            ✏ Edit
                         </a>
                     @endcan
 
                     @can('delete', $post)
-                        <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus post ini?')">
-                            @csrf 
-                            @method('DELETE')
-                            <button type="submit" 
-                                    class="bg-white-400 hover:bg-red-600 text-black px-3 py-1.5 rounded-md text-sm shadow-sm border border-gray-300">
-                                Delete
-                            </button>
-                        </form>
+                        <button type="button"
+                                onclick="openDeleteModal('{{ route('posts.destroy', $post) }}')" 
+                                class="bg-red-500 hover:bg-red-600 text-gray-700 px-4 py-2 rounded-lg text-sm shadow-sm transition">
+                            🗑 Delete
+                        </button>
                     @endcan
                 </div>
             </div>
