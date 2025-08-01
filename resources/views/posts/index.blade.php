@@ -12,19 +12,26 @@
 
         @forelse ($posts as $post)
             <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition p-5 mb-5 border border-gray-200">
-                <h3 class="text-xl font-bold text-gray-800 mb-2">{{ $post->title }}</h3>
-                <hr class="border-gray-200 mb-3">
-                <p class="text-gray-700 leading-relaxed mb-3">
-                    {!! nl2br(e($post->content)) !!}
+                <h3 class="text-xl font-bold text-gray-800 mb-2">
+                    <a href="{{ route('posts.show', $post) }}" class="hover:text-blue-600 transition">
+                        {{ $post->title }}
+                    </a>
+                </h3>
+                <p class="text-sm text-gray-500 mb-3">
+                    By <span class="font-semibold">{{ $post->user->name ?? 'Unknown User' }}</span>
+                    • <span class="font-normal italic">{{ $post->updated_at->format('d M Y H:i') }}</span>
                 </p>
-                <p class="text-sm text-gray-500 mb-4">
-                    By <span class="font-semibold">{{ $post->user->name ?? 'Unknown User' }}</span> • <span class="font-normal italic">{{ $post->updated_at }}</span>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    {!! nl2br(e(\Illuminate\Support\Str::words($post->content, 100, '...'))) !!}
                 </p>
 
                 <div class="flex space-x-3">
+                    <a href="{{ route('posts.show', $post) }}" class="bg-gray-200 hover:bg-gray-400 text-black px-3 py-1.5 rounded-md text-sm shadow-sm">
+                        Read More
+                    </a>
                     @can('update', $post)
                         <a href="{{ route('posts.edit', $post) }}" 
-                           class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1.5 rounded-md text-sm shadow-sm">
+                           class="bg-white-400 hover:bg-yellow-500 text-black px-3 py-1.5 rounded-md text-sm shadow-sm border border-gray-300">
                             Edit
                         </a>
                     @endcan
@@ -34,7 +41,7 @@
                             @csrf 
                             @method('DELETE')
                             <button type="submit" 
-                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-sm shadow-sm">
+                                    class="bg-white-400 hover:bg-red-600 text-black px-3 py-1.5 rounded-md text-sm shadow-sm border border-gray-300">
                                 Delete
                             </button>
                         </form>
@@ -44,5 +51,10 @@
         @empty
             <p class="text-gray-500">Tidak ada post tersedia.</p>
         @endforelse
+
+         <!-- Pagination -->
+        <div class="mt-6">
+            {{ $posts->links() }}
+        </div>
     </div>
 @endsection
