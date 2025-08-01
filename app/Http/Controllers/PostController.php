@@ -12,9 +12,36 @@ class PostController extends Controller
         $this->middleware('auth');
     }
 
-    public function index() {
+    public function index(Request $request) {
         // $posts = Post::where('user_id', Auth::id())->latest()->get();
-        $posts = Post::with('user')->latest()->paginate(5);
+        $query = Post::with('user')->latest();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $filter = $request->filter ?? 'all';
+
+            $query->where(function($q) use ($search, $filter) {
+                if ($filter === 'title') {
+                    $q->where('title', 'LIKE', "%{$search}%");
+                } elseif ($filter === 'author') {
+                    $q->whereHas('user', function($u) use ($search) {
+                        $u->where('name', 'LIKE', "%{$search}%");
+                    });
+                } elseif ($filter === 'date') {
+                    $q->whereDate('updated_at', $search); // format: YYYY-MM-DD
+                } else {
+                    // Default: cari di semua field
+                    $q->where('title', 'LIKE', "%{$search}%")
+                    ->orWhereHas('user', function($u) use ($search) {
+                        $u->where('name', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereDate('updated_at', $search);
+                }
+            });
+        }
+
+        // $posts = Post::with('user')->latest()->paginate(5);
+        $posts = $query->paginate(5);
         return view('posts.index', compact('posts'));
     }
 

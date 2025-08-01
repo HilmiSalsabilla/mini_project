@@ -79,11 +79,19 @@
 
     <!-- Flash Message -->
     @if (session('success'))
-        <div class="max-w-4xl mx-auto mt-4 px-4">
-            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded">
-                {{ session('success') }}
-            </div>
-        </div>
+        <x-alert type="success" :message="session('success')" />
+    @endif
+
+    @if (session('error'))
+        <x-alert type="error" :message="session('error')" />
+    @endif
+
+    @if (session('warning'))
+        <x-alert type="warning" :message="session('warning')" />
+    @endif
+
+    @if (session('info'))
+        <x-alert type="info" :message="session('info')" />
     @endif
 
     <!-- Main Content -->
@@ -99,14 +107,14 @@
             <div class="flex justify-end space-x-3">
                 <button type="button" onclick="closeDeleteModal()" 
                         class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg text-sm">
-                    Batal
+                    Cancel
                 </button>
                 <form id="deleteForm" method="POST">
                     @csrf
                     @method('DELETE')
                     <button type="submit" 
                             class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm">
-                        Hapus
+                        Delete
                     </button>
                 </form>
             </div>
@@ -143,12 +151,6 @@
         document.getElementById('mobile-menu-button').addEventListener('click', () => {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
-
-        // Auto-hide flash message
-        setTimeout(() => {
-            const flash = document.querySelector('.bg-green-100');
-            if (flash) flash.style.display = 'none';
-        }, 3000);
     </script>
 </body>
 </html>

@@ -10,10 +10,36 @@
             </a>
         </div>
 
+        <!-- Form Search dengan Filter -->
+        <form method="GET" action="{{ route('posts.index') }}" class="mb-6 flex flex-wrap gap-2 items-center">
+            <input type="text" name="search" placeholder="Search..."
+                value="{{ request('search') }}"
+                class="flex-1 px-4 py-2 border rounded-lg text-sm focus:ring focus:ring-blue-200">
+
+            <select name="filter" class="px-4 py-2 border rounded-lg text-sm focus:ring focus:ring-blue-200">
+                <option value="all" {{ request('filter') == 'all' ? 'selected' : '' }}>All</option>
+                <option value="title" {{ request('filter') == 'title' ? 'selected' : '' }}>Title</option>
+                <option value="user" {{ request('filter') == 'user' ? 'selected' : '' }}>Author</option>
+                <option value="date" {{ request('filter') == 'date' ? 'selected' : '' }}>Date (YYYY-MM-DD)</option>
+            </select>
+
+            <button type="submit" 
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                🔍 Search
+            </button>
+
+            @if(request('search'))
+                <a href="{{ route('posts.index') }}" 
+                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm">
+                    ✕ Clear
+                </a>
+            @endif
+        </form>
+
         @forelse ($posts as $post)
             <div class="bg-white rounded-xl shadow-sm hover:shadow-lg transition p-5 mb-5 border border-gray-200">
                 <h3 class="text-xl font-bold text-gray-800 mb-2">
-                    <a href="{{ route('posts.show', $post) }}" class="hover:text-blue-600 transition">
+                    <a href="{{ route('posts.show', $post) }}" class="hover:text-red-600 transition">
                         {{ $post->title }}
                     </a>
                 </h3>
@@ -22,7 +48,7 @@
                     • <span class="font-normal italic">{{ $post->updated_at->format('d M Y H:i') }}</span>
                 </p>
                 <p class="text-gray-700 leading-relaxed mb-4">
-                    {!! nl2br(e(\Illuminate\Support\Str::words($post->content, 100, '...'))) !!}
+                    {!! nl2br(e(\Illuminate\Support\Str::words($post->content, 75, '...'))) !!}
                 </p>
 
                 <div class="flex space-x-3">
@@ -51,7 +77,7 @@
 
          <!-- Pagination -->
         <div class="mt-6">
-            {{ $posts->links() }}
+            {{ $posts->appends(['search' => request('search'), 'filter' => request('filter')])->links() }}
         </div>
     </div>
 @endsection
