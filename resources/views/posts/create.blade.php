@@ -1,48 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <h2 class="text-2xl mb-4 font-normal">Create Post</h2>
+<div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6">
+    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Create Post</h2>
 
-        {{-- Tampilkan error validasi --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <strong>Whoops!</strong> Ada kesalahan input:<br><br>
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    {{-- Tampilkan error validasi --}}
+    @if ($errors->any())
+        <div class="bg-red-100 border border-red-300 text-red-700 px-4 py-3 rounded mb-4">
+            <strong>Whoops!</strong> Ada kesalahan input:
+            <ul class="list-disc pl-6 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
-        <form action="{{ route('posts.store') }}" method="post">
-            @csrf
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input 
-                    type="text" 
-                    name="title" 
-                    id="title" 
-                    class="form-control mb-2" 
-                    placeholder="Title"
-                    value="{{ old('title') }}" 
-                    required>
-            </div>
+    <form action="{{ route('posts.store') }}" method="POST" class="space-y-5">
+        @csrf
+        <div>
+            <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <input 
+                type="text" 
+                name="title" 
+                id="title"
+                placeholder="Enter title"
+                value="{{ old('title') }}"
+                required
+                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            >
+        </div>
 
-            <div class="mb-3">
-                <label for="content" class="form-label">Content</label>
-                <textarea 
-                    name="content" 
-                    id="content" 
-                    class="form-control mb-2" 
-                    placeholder="Content" 
-                    rows="5"
-                    required>{{ old('content') }}</textarea>
-            </div>
+        <div>
+            <label for="content" class="block text-sm font-medium text-gray-700 mb-1">Content</label>
+            <textarea 
+                name="content" 
+                id="content" 
+                rows="6"
+                placeholder="Write your content here..."
+                required
+                class="w-full border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+            >{{ old('content') }}</textarea>
+        </div>
 
-            <button class="btn btn-success">Save</button>
-            <a href="{{ route('posts.index') }}" class="btn btn-secondary">Cancel</a>
-        </form>
-    </div>
+        <div class="flex space-x-3">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">
+                Save
+            </button>
+            <a href="{{ route('posts.index') }}" 
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg shadow">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
 @endsection

@@ -4,67 +4,98 @@
 
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Mini Laravel App') }}</title>
+    <title>{{ config('app.name', 'Mini Laravel App') }}</title>
 
-        <!-- Bootstrap 5 via CDN -->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <!-- Tailwind -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Brand -->
+                <div class="flex items-center">
+                    <a href="{{ url('/') }}" class="text-xl font-semibold text-gray-800 hover:text-red-600">
+                        Laravel Mini App
+                    </a>
+                </div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body>
-        {{-- <div class="text-center text-white bg-secondary py-1">Layout Loaded ✅</div> --}}
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <div class="container">
-                <a href="{{ url('/') }}" class="navbar-brand text-2xl font-semibold">Laravel Mini App</a>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav ms-auto">
-                        @auth
-                            <li class="nav-item">
-                                <a href="{{ route('posts.index') }}" class="nav-link">Posts</a>
-                            </li>
-                            <li class="nav-item">
-                                <span class="nav-link">Hello, {{ auth()->user()->name }} </span>
-                            </li>
-                            <li class="nav-item">
-                                <form action="{{ route('logout') }}" method="post" class="d-inline">
-                                    @csrf
-                                    <button class="btn btn-sm btn-outline-light">Logout</button>
-                                </form>
-                            </li>
-                        @else
-                            <li class="nav-item">
-                                <a href="{{ route('login') }}" class="nav-link">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('register') }}" class="nav-link">Register</a>
-                            </li>
-                        @endauth
-                    </ul>
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 items-center">
+                    @auth
+                        <a href="{{ route('posts.index') }}" class="text-gray-700 hover:text-red-600">Posts</a>
+                        <span class="text-gray-600">Hello, <strong>{{ auth()->user()->name }}</strong></span>
+                        <form action="{{ route('logout') }}" method="POST" class="inline">
+                            @csrf
+                            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm">
+                                Logout
+                            </button>
+                        </form>
+                    @else
+                        <a href="{{ route('login') }}" class="text-gray-700 hover:text-red-600">Login</a>
+                        <a href="{{ route('register') }}" class="text-gray-700 hover:text-red-600">Register</a>
+                    @endauth
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="focus:outline-none">
+                        <svg class="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M4 6h16M4 12h16M4 18h16"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
-        </nav>
-        <main>
-            @if (session('success'))
-                <div class="container">
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                </div>
-            @endif
-            @yield('content')
-        </main>
-        
-        <!-- Bootstrap JS via CDN -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    </body>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 space-y-2 bg-white shadow-md">
+            @auth
+                <a href="{{ route('posts.index') }}" class="block text-gray-700 hover:text-indigo-600">Posts</a>
+                <span class="block text-gray-600">Hello, {{ auth()->user()->name }}</span>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button class="w-full bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm mt-1">
+                        Logout
+                    </button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="block text-gray-700 hover:text-indigo-600">Login</a>
+                <a href="{{ route('register') }}" class="block text-gray-700 hover:text-indigo-600">Register</a>
+            @endauth
+        </div>
+    </nav>
+
+    <!-- Flash Message -->
+    @if (session('success'))
+        <div class="max-w-4xl mx-auto mt-4 px-4">
+            <div class="bg-green-100 border border-green-300 text-green-700 px-4 py-2 rounded">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        @yield('content')
+    </main>
+
+    <script>
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+    </script>
+</body>
 </html>
