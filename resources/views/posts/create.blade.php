@@ -44,11 +44,11 @@
         </div>
 
         <div class="flex space-x-3">
-            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow">
+            <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm rounded-lg shadow-sm transition">
                 Save
             </button>
             <a href="{{ route('posts.index') }}" 
-               class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg shadow">
+               class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 text-sm rounded-lg shadow-sm transition">
                 Cancel
             </a>
         </div>

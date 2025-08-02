@@ -24,13 +24,13 @@
             </select>
 
             <button type="submit" 
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow-md transition">
                 🔍 Search
             </button>
 
             @if(request('search'))
                 <a href="{{ route('posts.index') }}" 
-                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm">
+                class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-3 py-2 rounded-lg text-sm shadow-md transition">
                     ✕ Clear
                 </a>
             @endif
